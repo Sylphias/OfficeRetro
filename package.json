@@ -1,0 +1,17 @@
+{
+  "name": "aura-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "firebase-admin": "^8.8.0",
+    "moment": "^2.24.0",
+    "telegraf": "^3.34.1"
+  }
+}
