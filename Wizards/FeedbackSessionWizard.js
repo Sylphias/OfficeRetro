@@ -1,15 +1,15 @@
 const WizardScene = require('telegraf/scenes/wizard');
 const Composer = require('telegraf/composer');
-const createFeedbackSession = new Composer();
 const Markup = require('telegraf/markup');
 
 const FeedbackSession = require('../Classes/FeedbackSession')
+const createFeedbackSession = new Composer();
 
 const requestFeedbackSessionName = (ctx) => {
   ctx.reply('Hello! To begin a feedback session, please enter a session name!');
-  ctx.wizard.next();
+  return ctx.wizard.next();
 }
-createFeedbackSession.on('text',async (ctx) => {
+createFeedbackSession.on('message',async (ctx) => {
   const msgInfo = ctx.message.from
   const fbs = new FeedbackSession(msgInfo.id,msgInfo.username,msgInfo.first_name,ctx.message.text)
   const doc = await fbs.save();
@@ -18,7 +18,7 @@ createFeedbackSession.on('text',async (ctx) => {
       Markup.switchToCurrentChatButton('Give Feedback',doc.id.toString()),
     ]),
   });
-  ctx.scene.leave();
+  return ctx.scene.leave();
 })
 
 const StartFeedbackSession = new WizardScene('feedbackStart',
