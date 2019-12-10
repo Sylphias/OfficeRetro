@@ -8,7 +8,7 @@ class EmotionRecord{
   }
 
   async save(){
-      await Firebase.collection('Emotjournal_records').add({
+      await Firebase.collection('emotion_record').add({
       userId: this.userId,
       emotion: this.emotion,
       createdAt: this.createdAt

@@ -4,7 +4,10 @@ const Markup = require('telegraf/markup');
 
 const bot = new Telegram(process.env.BOT_TOKEN)
 const SubscriptionHelper = require('./Helpers/SubscriptionHelpers');
-const User = require('./Classes/User');
+const removeIndent = require('./Helpers/TextHelpers').removeIndent;
+const User = require('./Classes/UserSubscription');
+const GroupSubscription = require('./Classes/GroupSubscription');
+
 const DeclareCronJobs = ()=>{
   //0 15 17 * * 1-5
   new CronJob('0 15 17 * * 1-5',
@@ -42,7 +45,33 @@ const DeclareCronJobs = ()=>{
   true,
   'Asia/Singapore'
   )
+  //0 15 9 * * 1-5
+  new CronJob('*/10 * * * * 1-5',
+  async ()=>{
+   const groupQueryDocs = await SubscriptionHelper.GetActiveGroupSubscriptions()
+   groupQueryDocs.map(async (queryDoc)=>{
+      try{
+        const groupInfo = queryDoc.data()
+        const group = new GroupSubscription(groupInfo.chatId,groupInfo.subscribedUsers,groupInfo.uuid)
+        const emotions = await group.getCurrentDayTeamEmotion()
+        const message = emotions.length === 0 ? `Sorry, nobody filled up their emotion journals today... ` :  
+        removeIndent`This is a summary of how your team felt after yesterday:
 
+        ${emotions}
+        `
+        await bot.sendMessage(groupInfo.chatId,
+          message
+        )
+      }catch(err){
+        bot.sendMessage('Failed to retrieve team\'s emotional summary for today.')
+        console.error(err)
+      }
+    })
+  },
+  null,
+  true,
+  'Asia/Singapore'
+  )
 }
 
 module.exports = {DeclareCronJobs}
