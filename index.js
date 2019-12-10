@@ -113,7 +113,7 @@ const handleInputWithArgs = async (arg,ctx)=>{
     default:
   }
 }
-const welcomeMsg = removeIndent`
+const welcomeMsg = `
 Hello there! This is Retro bot! Here are the commands you can use to start collecting feedback\n
 ----- Group Commands -----
 /startSession <Session Title> - starts a new feedback session with a default questionnaire (eg /startSession Sprint retro 29th aug)
@@ -126,14 +126,14 @@ Hello there! This is Retro bot! Here are the commands you can use to start colle
 
 `
 bot.command('help',(ctx)=>{
-  ctx.reply(welcomeMsg,{parse_mode:'html'})
+  ctx.reply(welcomeMsg)
 })
 
 bot.start((ctx) => {
 
   let args = ctx.message.text.split(' ')
   if(args.length === 1){
-    return ctx.reply(welcomeMsg,{parse_mode:'html'})
+    return ctx.reply(welcomeMsg)
   }
   let subArgs = args[1].split('_')
   switch(subArgs.length){
@@ -144,7 +144,7 @@ bot.start((ctx) => {
       ctx.scene.enter('feedbackEntry')
       break;
     default:
-      ctx.reply(welcomeMsg,{parse_mode:'html'})
+      ctx.reply(welcomeMsg)
   }
 });
 

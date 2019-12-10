@@ -46,7 +46,7 @@ const DeclareCronJobs = ()=>{
   'Asia/Singapore'
   )
   //0 15 9 * * 1-5
-  new CronJob('*/10 * * * * 1-5',
+  new CronJob('0 15 9 * * 1-5',
   async ()=>{
    const groupQueryDocs = await SubscriptionHelper.GetActiveGroupSubscriptions()
    groupQueryDocs.map(async (queryDoc)=>{
