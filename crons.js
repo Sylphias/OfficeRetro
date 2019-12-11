@@ -11,7 +11,7 @@ const GroupSubscription = require("./Classes/GroupSubscription");
 const DeclareCronJobs = () => {
   //0 15 17 * * 1-5
   new CronJob(
-    "*/10 * * * * 1-5",
+    "0 15 17 * * 1-5",
     async () => {
       const userDocs = await SubscriptionHelper.GetActiveSubscriptionsUserId();
       userDocs.map(async doc => {
@@ -49,7 +49,7 @@ const DeclareCronJobs = () => {
     "Asia/Singapore"
   );
   //0 15 9 * * 1-5
-  new CronJob('*/10 * * * * 1-5',
+  new CronJob('0 15 9 * * 1-5',
   async ()=>{
    const groupQueryDocs = await SubscriptionHelper.GetActiveGroupSubscriptions()
    groupQueryDocs.map(async (queryDoc)=>{
