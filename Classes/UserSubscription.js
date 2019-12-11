@@ -2,7 +2,7 @@ const Firebase = require("../firebase");
 // this class manages all user related options
 
 // TODO, user perms, etc
-class User {
+class UserSubscription {
   constructor(userInfo) {
     this.userId = userInfo.id
       ? userInfo.id.toString()
@@ -12,12 +12,12 @@ class User {
     this.last_name = userInfo.last_name || "";
   }
 
-  async exists() {
+  static async get(userId) {
     // check if user subscription already exists
     const userDoc = await Firebase.collection("user_subscriptions")
-      .doc(this.userId)
+      .doc(userId.toString())
       .get();
-    return userDoc.exists;
+    return userDoc.data() ?  new UserSubscription(userDoc.data()) : undefined;
   }
 
   async create() {
@@ -28,7 +28,7 @@ class User {
         username: this.username,
         first_name: this.first_name,
         last_name: this.last_name
-      });
+    });
   }
 
   async delete() {
@@ -37,12 +37,6 @@ class User {
       .delete();
   }
 
-  static async fetchUser(userId) {
-    let userDoc = await Firebase.collection("user_subscriptions")
-      .doc(userId)
-      .get();
-    return userDoc ? userDoc.data() : null;
-  }
 }
 
-module.exports = User;
+module.exports = UserSubscription;

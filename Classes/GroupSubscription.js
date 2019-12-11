@@ -3,48 +3,33 @@ const Moment = require("moment");
 
 class GroupSubscription {
   constructor(chatId, subscribedUsers = [], uuid = "") {
-    this.uuid = uuid;
     this.chatId = chatId;
     this.subscribedUsers = subscribedUsers;
   }
-  async exists() {
-    const query = await Firebase.collection("group_subscriptions")
-      .where("chatId", "==", this.chatId)
-      .get();
-    // There should be only 1 entry. Else delete one of the entries
-    if (query.size > 1) {
-      await this.delete();
-    }
 
-    if (query.size === 0) {
-      return false;
-    } else {
-      const data = query.docs[0].data();
-      this.uuid = query.docs[0].id;
-      this.chatId = data.chatId;
-      this.subscribedUsers = data.subscribedUsers;
-      return true;
-    }
+  static async get(chatId) {
+    const query = await Firebase.collection("group_subscriptions")
+    .doc(chatId)  
+    .get();
+    const data = query.data()
+    return data? new GroupSubscription(data.chatId,data.subscribedUsers): undefined;
   }
 
   async create() {
-    if (!(await this.exists())) {
-      const doc = await Firebase.collection("group_subscriptions").add({
-        chatId: this.chatId.toString(),
-        subscribedUsers: this.subscribedUsers
-      });
-      this.uuid = doc.id;
-    }
+    await Firebase.collection("group_subscriptions").doc(this.chatId.toString()).set({
+      chatId: this.chatId.toString(),
+      subscribedUsers: this.subscribedUsers
+    });
   }
 
   async update() {
-    if (!this.uuid) {
+    if (!this.chatId) {
       throw new Error(
-        "Unable to update subscription, some information is missing from the records"
+        "Unable to update subscription, some info`rmation is missing from the records"
       );
     }
     await Firebase.collection("group_subscriptions")
-      .doc(this.uuid)
+      .doc(this.chatId)
       .update({
         chatId: this.chatId.toString(),
         subscribedUsers: this.subscribedUsers
@@ -52,20 +37,17 @@ class GroupSubscription {
   }
 
   async delete() {
-    const query = await Firebase.collection("group_subscriptions")
-      .where("chatId", "==", this.chatId.toString())
-      .get();
-    await Firebase.collection("group_subscriptions")
-      .doc(query.docs[0].data.id)
-      .delete();
-  }
-
-  async subscribeUser(userId) {
-    if (!this.uuid) {
+    if (!this.chatId) {
       throw new Error(
         "Unable to update subscription, some information is missing from the records"
       );
     }
+    await Firebase.collection("group_subscriptions")
+      .doc(this.chatId)
+      .delete();
+  }
+
+  async subscribeUser(userId) {
     if (this.subscribedUsers.includes(userId)) {
       throw new Error("User is already suscribed");
     }
@@ -89,13 +71,6 @@ class GroupSubscription {
         return accumulator + doc.data().emotion;
       }, "");
     return emotionInString;
-  }
-
-  static async FetchGroupSubscription(chatId) {
-    const grp = new GroupSubscription(chatId);
-    if (await grp.exists()) {
-      return grp;
-    }
   }
 }
 

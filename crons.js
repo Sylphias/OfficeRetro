@@ -11,7 +11,7 @@ const GroupSubscription = require("./Classes/GroupSubscription");
 const DeclareCronJobs = () => {
   //0 15 17 * * 1-5
   new CronJob(
-    "0 15 17 * * 1-5",
+    "*/10 * * * * 1-5",
     async () => {
       const userDocs = await SubscriptionHelper.GetActiveSubscriptionsUserId();
       userDocs.map(async doc => {
@@ -49,23 +49,16 @@ const DeclareCronJobs = () => {
     "Asia/Singapore"
   );
   //0 15 9 * * 1-5
-  new CronJob(
-    "*/10 * * * * 1-5",
-    async () => {
-      const groupQueryDocs = await SubscriptionHelper.GetActiveGroupSubscriptions();
-      groupQueryDocs.map(async queryDoc => {
-        try {
-          const groupInfo = queryDoc.data();
-          const group = new GroupSubscription(
-            groupInfo.chatId,
-            groupInfo.subscribedUsers,
-            groupInfo.uuid
-          );
-          const emotions = await group.getCurrentDayTeamEmotion();
-          const message =
-            emotions.length === 0
-              ? `Sorry, nobody filled up their emotion journals today... `
-              : removeIndent`This is a summary of how your team felt after yesterday:
+  new CronJob('*/10 * * * * 1-5',
+  async ()=>{
+   const groupQueryDocs = await SubscriptionHelper.GetActiveGroupSubscriptions()
+   groupQueryDocs.map(async (queryDoc)=>{
+      try{
+        const groupInfo = queryDoc.data()
+        const group = new GroupSubscription(groupInfo.chatId,groupInfo.subscribedUsers)
+        const emotions = await group.getCurrentDayTeamEmotion()
+        const message = emotions.length === 0 ? `Sorry, nobody filled up their emotion journals today... ` :  
+        removeIndent`This is a summary of how your team felt after yesterday:
 
         ${emotions}
         `;

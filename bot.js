@@ -33,9 +33,13 @@ bot.command("subscribe", async ctx => {
     return;
   }
   // if in private chat, add user to firestore.
-  const user = new UserSubscription(ctx.message.from);
+  const user =  UserSubscription.get(ctx.message.from.id);
   try {
-    await user.create();
+    if(user){
+      return ctx.reply('Sorry, you have already been subscribed!')
+    }
+    const newUser = new UserSubscription(ctx.message.from);
+    await newUser.create();
     ctx.reply("You have been subscribed to the Emotjournal!");
   } catch (err) {
     ctx.reply(
@@ -128,16 +132,22 @@ const handleInputWithArgs = async (arg, ctx) => {
       // if in private chat, add user to firestore.
       try {
         //check if user is already recording emotion
-        const user = new UserSubscription(ctx.message.from);
-        await user.create();
-        const grpSub = new GroupSubscription(arg[1]);
-        await grpSub.create();
+        let user =  await UserSubscription.get(ctx.message.from.id);
+        if(!user){
+          user = new UserSubscription(ctx.message.from)
+          await user.create();
+        }
+        const grpSub = await GroupSubscription.get(arg[1]);
+        if(!grpSub){
+          ctx.reply('Sorry, the link is no longer valid, go back to the main chat and type /startTeamEmotionJournal to subscribe again')
+        }
         await grpSub.subscribeUser(ctx.message.from.id);
         ctx.reply("You have been subscribed to the Emotjournal!");
       } catch (err) {
         ctx.reply(
-          `Sorry, there was an issue updating your Subscription! (${err})`
+          `Sorry, there was an issue updating your Subscription! Please try again`
         );
+        console.error(err)
       }
       break;
     default:
