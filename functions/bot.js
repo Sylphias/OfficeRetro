@@ -2,9 +2,10 @@ const Telegraf = require("telegraf");
 const session = require("telegraf/session");
 const Stage = require("telegraf/stage");
 const Markup = require("telegraf/markup");
+const config = require("./config");
 const { leave } = Stage;
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf(config.botToken);
 
 const stage = new Stage();
 const FeedbackEntry = require("./Wizards/FeedbackEntryWizard");
@@ -33,10 +34,10 @@ bot.command("subscribe", async ctx => {
     return;
   }
   // if in private chat, add user to firestore.
-  const user =  UserSubscription.get(ctx.message.from.id);
+  const user = UserSubscription.get(ctx.message.from.id);
   try {
-    if(user){
-      return ctx.reply('Sorry, you have already been subscribed!')
+    if (user) {
+      return ctx.reply("Sorry, you have already been subscribed!");
     }
     const newUser = new UserSubscription(ctx.message.from);
     await newUser.create();
@@ -80,7 +81,7 @@ bot.command("startTeamEmotionJournal", async ctx => {
           Markup.urlButton(
             "Register to Team",
             `${
-              process.env.BOT_URL
+              config.BOT_URL
             }?start=emotionJournal_${grpChat.chatId.toString()}`
           )
         ]
@@ -114,7 +115,7 @@ bot.command("startSession", async ctx => {
         [
           Markup.urlButton(
             "Give Feedback",
-            `${process.env.BOT_URL}?start=${doc.id.toString()}`
+            `${config.botUrl}?start=${doc.id.toString()}`
           )
         ]
       ])
@@ -132,14 +133,16 @@ const handleInputWithArgs = async (arg, ctx) => {
       // if in private chat, add user to firestore.
       try {
         //check if user is already recording emotion
-        let user =  await UserSubscription.get(ctx.message.from.id);
-        if(!user){
-          user = new UserSubscription(ctx.message.from)
+        let user = await UserSubscription.get(ctx.message.from.id);
+        if (!user) {
+          user = new UserSubscription(ctx.message.from);
           await user.create();
         }
         const grpSub = await GroupSubscription.get(arg[1]);
-        if(!grpSub){
-          ctx.reply('Sorry, the link is no longer valid, go back to the main chat and type /startTeamEmotionJournal to subscribe again')
+        if (!grpSub) {
+          ctx.reply(
+            "Sorry, the link is no longer valid, go back to the main chat and type /startTeamEmotionJournal to subscribe again"
+          );
         }
         await grpSub.subscribeUser(ctx.message.from.id);
         ctx.reply("You have been subscribed to the Emotjournal!");
@@ -147,7 +150,7 @@ const handleInputWithArgs = async (arg, ctx) => {
         ctx.reply(
           `Sorry, there was an issue updating your Subscription! Please try again`
         );
-        console.error(err)
+        console.error(err);
       }
       break;
     default:

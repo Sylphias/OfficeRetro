@@ -1,4 +1,4 @@
-const Firebase = require("../firebase");
+const { firestore } = require("../firebase");
 const Moment = require("moment");
 
 class GroupSubscription {
@@ -8,18 +8,24 @@ class GroupSubscription {
   }
 
   static async get(chatId) {
-    const query = await Firebase.collection("group_subscriptions")
-    .doc(chatId)  
-    .get();
-    const data = query.data()
-    return data? new GroupSubscription(data.chatId,data.subscribedUsers): undefined;
+    const query = await firestore
+      .collection("group_subscriptions")
+      .doc(chatId)
+      .get();
+    const data = query.data();
+    return data
+      ? new GroupSubscription(data.chatId, data.subscribedUsers)
+      : undefined;
   }
 
   async create() {
-    await Firebase.collection("group_subscriptions").doc(this.chatId.toString()).set({
-      chatId: this.chatId.toString(),
-      subscribedUsers: this.subscribedUsers
-    });
+    await firestore
+      .collection("group_subscriptions")
+      .doc(this.chatId.toString())
+      .set({
+        chatId: this.chatId.toString(),
+        subscribedUsers: this.subscribedUsers
+      });
   }
 
   async update() {
@@ -28,7 +34,8 @@ class GroupSubscription {
         "Unable to update subscription, some info`rmation is missing from the records"
       );
     }
-    await Firebase.collection("group_subscriptions")
+    await firestore
+      .collection("group_subscriptions")
       .doc(this.chatId)
       .update({
         chatId: this.chatId.toString(),
@@ -42,7 +49,8 @@ class GroupSubscription {
         "Unable to update subscription, some information is missing from the records"
       );
     }
-    await Firebase.collection("group_subscriptions")
+    await firestore
+      .collection("group_subscriptions")
       .doc(this.chatId)
       .delete();
   }
@@ -56,7 +64,8 @@ class GroupSubscription {
   }
 
   async getCurrentDayTeamEmotion() {
-    const query = await Firebase.collection("emotion_record")
+    const query = await firestore
+      .collection("emotion_record")
       .where(
         "createdAt",
         ">",

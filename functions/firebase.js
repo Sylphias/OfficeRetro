@@ -6,4 +6,6 @@ admin.initializeApp({
 });
 const Firestore = admin.firestore();
 
-module.exports = Firestore
+module.exports = {
+  firestore: Firestore
+}

@@ -1,8 +1,9 @@
 const CronJob = require("cron").CronJob;
 const Telegram = require("telegraf/telegram");
 const Markup = require("telegraf/markup");
+const config = require("./functions/config");
 
-const bot = new Telegram(process.env.BOT_TOKEN);
+const bot = new Telegram(config.botToken);
 const SubscriptionHelper = require("./Helpers/SubscriptionHelpers");
 const removeIndent = require("./Helpers/TextHelpers").removeIndent;
 const User = require("./Classes/UserSubscription");

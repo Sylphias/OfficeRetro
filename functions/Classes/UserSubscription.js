@@ -1,4 +1,4 @@
-const Firebase = require("../firebase");
+const { firestore } = require("../firebase");
 // this class manages all user related options
 
 // TODO, user perms, etc
@@ -14,29 +14,31 @@ class UserSubscription {
 
   static async get(userId) {
     // check if user subscription already exists
-    const userDoc = await Firebase.collection("user_subscriptions")
+    const userDoc = await firestore
+      .collection("user_subscriptions")
       .doc(userId.toString())
       .get();
-    return userDoc.data() ?  new UserSubscription(userDoc.data()) : undefined;
+    return userDoc.data() ? new UserSubscription(userDoc.data()) : undefined;
   }
 
   async create() {
-    return await Firebase.collection("user_subscriptions")
+    return await firestore
+      .collection("user_subscriptions")
       .doc(this.userId)
       .set({
         userId: this.userId,
         username: this.username,
         first_name: this.first_name,
         last_name: this.last_name
-    });
+      });
   }
 
   async delete() {
-    return await Firebase.collection("user_subscriptions")
+    return await firestore
+      .collection("user_subscriptions")
       .doc(this.userId)
       .delete();
   }
-
 }
 
 module.exports = UserSubscription;
