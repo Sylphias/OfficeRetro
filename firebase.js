@@ -1,9 +1,9 @@
-const admin = require('firebase-admin')
+const admin = require('firebase-admin');
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
-  databaseURL: "https://aura-tele-bot.firebaseio.com"
+  databaseURL: 'https://aura-tele-bot.firebaseio.com',
 });
 const Firestore = admin.firestore();
 
-module.exports = Firestore
+module.exports = Firestore;

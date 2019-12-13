@@ -1,20 +1,21 @@
+const Moment = require('moment');
 const Firebase = require('../firebase');
-const Moment = require('moment')
-class FeedbackSession{
-  constructor(userId,username,name,title,dateCreated,dateModified){
-    this.data ={
+
+class FeedbackSession {
+  constructor(userId, username, name, title, dateCreated, dateModified) {
+    this.data = {
       userId,
       username,
       name,
       title,
-      dateCreated:dateCreated?dateCreated:Moment().valueOf(),
-      dateModified:dateModified?dateModified:Moment().valueOf(),
-    }
+      dateCreated: dateCreated || Moment().valueOf(),
+      dateModified: dateModified || Moment().valueOf(),
+    };
   }
 
-  async save(){
-    return await Firebase.collection('feedback_session').add(this.data)
+  async save() {
+    return Firebase.collection('feedback_session').add(this.data);
   }
 }
 
-module.exports = FeedbackSession
+module.exports = FeedbackSession;

@@ -1,29 +1,29 @@
+const Moment = require('moment');
 const Firebase = require('../firebase');
-const Moment = require('moment')
-class FeedbackEntry{
-  constructor(userId,username,sessionId,dateCreated,dateModified){
+
+class FeedbackEntry {
+  constructor(userId, username, sessionId, dateCreated, dateModified) {
     this.data = {
       userId,
       username,
       sessionId,
-      responses:[],
-      dateCreated:dateCreated?dateCreated:Moment().valueOf(),
-      dateModified:dateModified?dateModified:Moment().valueOf(),
-    }
+      responses: [],
+      dateCreated: dateCreated || Moment().valueOf(),
+      dateModified: dateModified || Moment().valueOf(),
+    };
   }
 
-  addResponse(question,answer){
-    this.data.responses.push({question,answer})
+  addResponse(question, answer) {
+    this.data.responses.push({ question, answer });
   }
 
-  async save(){
-    return await Firebase.collection('feedback_entries').add(this.data)
+  async save() {
+    return Firebase.collection('feedback_entries').add(this.data);
   }
 
-  resetResponses(){
-    this.data.responses = []
+  resetResponses() {
+    this.data.responses = [];
   }
-
 }
 
-module.exports=FeedbackEntry
+module.exports = FeedbackEntry;
