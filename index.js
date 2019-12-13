@@ -1,8 +1,7 @@
-require("dotenv").config();
+require('dotenv').config();
+const Cron = require('./Crons/UserCrons.js');
+const bot = require('./functions/bot');
 
-// const Cron = require("./crons");
-const bot = require("./functions/bot");
-
-// Cron.DeclareCronJobs(bot);
+Cron.DeclareCronJobs(bot);
 
 bot.launch();
