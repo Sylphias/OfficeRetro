@@ -8,7 +8,7 @@ const User = require('../functions/Classes/UserSubscription');
 
 const DeclareUserCronJobs = () => (
   new CronJob(
-    '0 15 17 * * 1-5',
+    '15 17 * * 1-5',
     async () => {
       const userDocs = await SubscriptionHelper.GetActiveSubscriptionsUserId();
       userDocs.map(async (doc) => {
