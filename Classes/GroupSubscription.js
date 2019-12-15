@@ -12,7 +12,7 @@ class GroupSubscription {
       .doc(chatId)
       .get();
     const data = query.data();
-    return data ? new GroupSubscription(data.chatId, data.subscribedUsers) : undefined;
+    return data ? new GroupSubscription(data.chatId, data.chatTitle) : undefined;
   }
 
   async create() {

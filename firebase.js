@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
-  databaseURL: 'https://aura-tele-bot.firebaseio.com',
+  databaseURL: 'https://aura-bot-staging.firebaseio.com',
 });
 const Firestore = admin.firestore();
 

@@ -1,9 +1,4 @@
 const Telegraf = require('telegraf');
-const session = require('telegraf/session');
-const Stage = require('telegraf/stage');
-const Markup = require('telegraf/markup');
-
-const { leave } = Stage;
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -35,16 +30,7 @@ const InitializeCommonFunctions = () => {
       return ctx.reply(welcomeMsg);
     }
     const subArgs = args[1].split('_');
-    switch (subArgs.length) {
-      case 2:
-        CmdHelpers.startArgsHelper(subArgs, ctx);
-        break;
-      case 1:
-        ctx.scene.enter('feedbackEntry');
-        break;
-      default:
-        ctx.reply(welcomeMsg, { parse_mode: 'html' });
-    }
+    CmdHelpers.startArgsHelper(subArgs, ctx);
   });
 };
 

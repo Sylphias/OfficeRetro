@@ -50,4 +50,4 @@ const DeclareUserCronJobs = () => {
   );
 };
 
-module.exports = { DeclareUserCronJobs };
+module.exports = DeclareUserCronJobs;

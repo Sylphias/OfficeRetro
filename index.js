@@ -9,8 +9,7 @@ const { leave } = Stage;
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 const stage = new Stage();
-
-const Cron = require('./Crons/UserCrons.js');
+const { GroupCron, UserCron } = require('./Crons');
 
 const EmotionFeatures = require('./BotFeatures/Emotion');
 const CommonFeatures = require('./BotFeatures/Common');
@@ -24,6 +23,7 @@ CommonFeatures(bot, stage);
 FeedbackFeatures(bot, stage);
 EmotionFeatures(bot, stage);
 
-Cron.DeclareCronJobs(bot);
+GroupCron();
+UserCron();
 
 bot.launch();
