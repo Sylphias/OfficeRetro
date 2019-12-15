@@ -10,5 +10,6 @@ if (process.env.NODE_ENV === 'production') {
   module.exports = {
     botToken: process.env.BOT_TOKEN,
     botUrl: process.env.BOT_URL,
+    useCredentialsFile: process.env.USE_CREDENTIALS_FILE,
   };
 }

@@ -21,7 +21,7 @@ const InitializeEmotionFunction = (bot, stage) => {
       return;
     }
     // if in private chat, add user to firestore.
-    const user = UserSubscription.get(ctx.message.from.id);
+    const user = await UserSubscription.get(ctx.message.from.id);
     try {
       if (user) {
         ctx.reply('Sorry, you have already been subscribed!');
