@@ -14,6 +14,8 @@ const telegramClient = new Telegram(config.botToken);
 exports.mysecretbotendpoint = functions
   .region('asia-east2')
   .https.onRequest(async (req, res) => {
+    // Logging
+    console.log(`This is a ${req.method} for ${req.url} request: ${JSON.stringify(req.body)}`);
     if (req.method.toLowerCase() !== 'post' || req.url !== '/') {
       return res.status(403).send();
     }
