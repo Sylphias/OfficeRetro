@@ -1,10 +1,8 @@
-
 const Markup = require('telegraf/markup');
-const EmotjournalWizard = require('../Wizards/EmotjournalWizard');
 
+const EmotjournalWizard = require('../Wizards/EmotjournalWizard');
 const CmdHelpers = require('../Helpers/CommandHelpers');
 const { removeIndent } = require('../Helpers/TextHelpers');
-
 const UserSubscription = require('../Classes/UserSubscription');
 const GroupSubscription = require('../Classes/GroupSubscription');
 
@@ -18,20 +16,19 @@ const InitializeEmotionFunction = (bot, stage) => {
   bot.command('subscribe', async (ctx) => {
     // check if its a private chat
     if (!CmdHelpers.isSameChat(ctx)) {
-      return;
+      return CmdHelpers.redirectToPrivateChat(ctx);
     }
     // if in private chat, add user to firestore.
     const user = await UserSubscription.get(ctx.message.from.id);
     try {
       if (user) {
-        ctx.reply('Sorry, you have already been subscribed!');
-        return;
+        return ctx.reply('Sorry, you have already been subscribed!');
       }
       const newUser = new UserSubscription(ctx.message.from);
       await newUser.create();
-      ctx.reply('You have been subscribed to the Emotjournal!');
+      return ctx.reply('You have been subscribed to the Emotjournal!');
     } catch (err) {
-      ctx.reply(
+      return ctx.reply(
         'Sorry, there was an issue updating your Subscription. Please try again!',
       );
     }
@@ -39,14 +36,14 @@ const InitializeEmotionFunction = (bot, stage) => {
 
   bot.command('unsubscribe', async (ctx) => {
     if (!CmdHelpers.isSameChat(ctx)) {
-      return;
+      return CmdHelpers.redirectToPrivateChat(ctx);
     }
     const user = new UserSubscription(ctx.message.from);
     try {
       await user.delete();
-      ctx.reply('You have been unsubscribed from the Emotjournal!');
+      return ctx.reply('You have been unsubscribed from the Emotjournal!');
     } catch (err) {
-      ctx.reply(
+      return ctx.reply(
         'Sorry, there was an issue updating your Subscription. Please try again!',
       );
     }
@@ -60,7 +57,7 @@ const InitializeEmotionFunction = (bot, stage) => {
     } catch (err) {
       return ctx.reply('Error Registering Group, please try again!');
     }
-    ctx.reply(
+    return ctx.reply(
       removeIndent`This team will now receive daily emotional roundups!
     To subscribe to a daily`,
       {

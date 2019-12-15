@@ -3,24 +3,17 @@ const UserSubscription = require('../Classes/UserSubscription');
 const GroupSubscription = require('../Classes/GroupSubscription');
 const config = require('../config');
 
-const isSameChat = (ctx) => {
-  if (ctx.chat.id !== ctx.message.from.id) {
-    // user is not in a private chat
-    ctx.reply('Please subscribe to me in a private chat window', {
-      reply_markup: Markup.inlineKeyboard([
-        [
-          Markup.urlButton(
-            'Click here to open a private chat',
-            `${config.botUrl}`,
-          ),
-        ],
-      ]),
-    });
-    return false;
-  }
-  return true;
-};
-
+const isSameChat = (ctx) => ctx.chat.id === ctx.message.from.id;
+const redirectToPrivateChat = (ctx) => ctx.reply('Please subscribe to me in a private chat window', {
+  reply_markup: Markup.inlineKeyboard([
+    [
+      Markup.urlButton(
+        'Click here to open a private chat',
+        `${config.botUrl}`,
+      ),
+    ],
+  ]),
+});
 const startArgsHelper = async (arg, ctx) => {
   switch (arg[0]) {
     case 'emotionJournal':
@@ -58,4 +51,5 @@ const startArgsHelper = async (arg, ctx) => {
 module.exports = {
   isSameChat,
   startArgsHelper,
+  redirectToPrivateChat,
 };
