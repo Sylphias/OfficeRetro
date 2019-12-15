@@ -25,16 +25,7 @@ const InitializeCommonFunctions = (bot) => {
       return ctx.reply(welcomeMsg);
     }
     const subArgs = args[1].split('_');
-    switch (subArgs.length) {
-      case 2:
-        return CmdHelpers.startArgsHelper(subArgs, ctx);
-
-      case 1:
-        return ctx.scene.enter('feedbackEntry');
-
-      default:
-        return ctx.reply(welcomeMsg, { parse_mode: 'html' });
-    }
+    return CmdHelpers.startArgsHelper(subArgs, ctx);
   });
 };
 

@@ -22,7 +22,7 @@ bot.use((ctx, next) => {
   return next();
 });
 
-CommonFeatures(bot, stage);
+CommonFeatures(bot);
 FeedbackFeatures(bot, stage);
 EmotionFeatures(bot, stage);
 

@@ -30,7 +30,7 @@ const InitializeFeedbackFunctions = (bot, stage) => {
           [
             Markup.urlButton(
               'Give Feedback',
-              `${process.env.BOT_URL}?start=${doc.id.toString()}`,
+              `${process.env.BOT_URL}?start=giveFeedback_${doc.id.toString()}`,
             ),
           ],
         ]),

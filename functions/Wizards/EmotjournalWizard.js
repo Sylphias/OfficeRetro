@@ -5,6 +5,7 @@ const Markup = require('telegraf/markup');
 const EmotionRecord = require('../Classes/EmotionRecord');
 
 const question = (ctx) => {
+  console.log(ctx);
   ctx.reply('Reply with an emoji that best suits how you feel today!', {
     parse_mode: 'html',
     ...Markup.keyboard([

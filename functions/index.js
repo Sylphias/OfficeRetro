@@ -38,5 +38,6 @@ exports.scheduledUserActions = functions.pubsub
   .timeZone('Asia/Singapore')
   .onRun(() => {
     userCrons.updateUserEmoteJournal();
-    groupCrons.updateTeamEmoteJournal();
+    groupCrons.dailyGroupEmotionMessage();
+    groupCrons.groupRecordEmotion();
   });
