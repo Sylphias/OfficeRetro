@@ -1,14 +1,14 @@
 const Moment = require('moment');
-const Firebase = require('../firebase');
+const { firestore } = require('../firebase');
 
 class GroupSubscription {
-  constructor(chatId, chatTitle) {
+  constructor(chatId, chatTitle = '') {
     this.chatId = chatId;
     this.chatTitle = chatTitle;
   }
 
   static async get(chatId) {
-    const query = await Firebase.collection('group_subscriptions')
+    const query = await firestore.collection('group_subscriptions')
       .doc(chatId)
       .get();
     const data = query.data();
@@ -16,10 +16,12 @@ class GroupSubscription {
   }
 
   async create() {
-    await Firebase.collection('group_subscriptions').doc(this.chatId.toString()).set({
-      chatId: this.chatId.toString(),
-      chatTitle: this.chatTitle,
-    });
+    return firestore.collection('group_subscriptions')
+      .doc(this.chatId.toString())
+      .set({
+        chatId: this.chatId.toString(),
+        chatTitle: this.chatTitle,
+      });
   }
 
   async delete() {
@@ -28,13 +30,15 @@ class GroupSubscription {
         'Unable to update subscription, some information is missing from the records',
       );
     }
-    await Firebase.collection('group_subscriptions')
+    return firestore
+      .collection('group_subscriptions')
       .doc(this.chatId)
       .delete();
   }
 
   async getCurrentDayTeamEmotion() {
-    const query = await Firebase.collection('group_emotion_record')
+    const query = await firestore
+      .collection('emotion_record')
       .where(
         'createdAt',
         '>',

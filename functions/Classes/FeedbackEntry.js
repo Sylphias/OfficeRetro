@@ -1,6 +1,5 @@
-const Moment = require('moment');
-const Firebase = require('../firebase');
-
+const { firestore } = require("../firebase");
+const Moment = require("moment");
 class FeedbackEntry {
   constructor(userId, username, sessionId, dateCreated, dateModified) {
     this.data = {
@@ -8,8 +7,8 @@ class FeedbackEntry {
       username,
       sessionId,
       responses: [],
-      dateCreated: dateCreated || Moment().valueOf(),
-      dateModified: dateModified || Moment().valueOf(),
+      dateCreated: dateCreated ? dateCreated : Moment().valueOf(),
+      dateModified: dateModified ? dateModified : Moment().valueOf()
     };
   }
 
@@ -18,7 +17,7 @@ class FeedbackEntry {
   }
 
   async save() {
-    return Firebase.collection('feedback_entries').add(this.data);
+    return await firestore.collection("feedback_entries").add(this.data);
   }
 
   resetResponses() {

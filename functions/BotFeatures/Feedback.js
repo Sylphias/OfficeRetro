@@ -1,14 +1,8 @@
-const Telegraf = require('telegraf');
-const session = require('telegraf/session');
-const Stage = require('telegraf/stage');
+
 const Markup = require('telegraf/markup');
-
-const { leave } = Stage;
-
 
 const FeedbackEntry = require('../Wizards/FeedbackEntryWizard');
 const FeedbackSession = require('../Classes/FeedbackSession');
-
 
 const InitializeFeedbackFunctions = (bot, stage) => {
   stage.register(FeedbackEntry);
@@ -29,7 +23,7 @@ const InitializeFeedbackFunctions = (bot, stage) => {
       matches[1],
     );
     const doc = await feedbackSesh.save();
-    ctx.reply(
+    return ctx.reply(
       'Please click on the button below to submit your feedback! Once you are in a private chat with the bot, click start to begin!',
       {
         reply_markup: Markup.inlineKeyboard([

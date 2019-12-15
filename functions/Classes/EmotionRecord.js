@@ -1,5 +1,5 @@
 const Moment = require('moment');
-const Firebase = require('../firebase');
+const { firestore } = require('../firebase');
 
 class EmotionRecord {
   constructor(userId, emotion) {
@@ -9,7 +9,7 @@ class EmotionRecord {
   }
 
   async save() {
-    await Firebase.collection('emotion_record').add({
+    await firestore.collection('emotion_record').add({
       userId: this.userId,
       emotion: this.emotion,
       createdAt: this.createdAt,

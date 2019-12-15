@@ -1,8 +1,4 @@
-require('dotenv').config();
 const Markup = require('telegraf/markup');
-
-const UserSubscription = require('../Classes/UserSubscription');
-const GroupSubscription = require('../Classes/GroupSubscription');
 
 const isSameChat = (ctx) => {
   if (ctx.chat.id !== ctx.message.from.id) {
@@ -21,7 +17,9 @@ const isSameChat = (ctx) => {
 const startArgsHelper = async (arg, ctx) => {
   switch (arg[0]) {
     case 'emotionJournal':
-      // This is where the user submits the emotion record after clicking the button from their main chats
+      // arg[1] = GroupSubscription.chatId
+      // This is where the user submits the emotion record after
+      // clicking the button from their main chats
       ctx.scene.enter('recordEmotjournal');
       break;
     case 'giveFeedback':

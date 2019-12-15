@@ -46,3 +46,5 @@ class GroupEmotionRecord {
     });
   }
 }
+
+module.exports = GroupEmotionRecord;

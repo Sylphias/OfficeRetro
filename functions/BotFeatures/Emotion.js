@@ -1,25 +1,20 @@
-
-const Markup = require('telegraf/markup');
 const EmotjournalWizard = require('../Wizards/EmotjournalWizard');
-
 const CmdHelpers = require('../Helpers/CommandHelpers');
 const { removeIndent } = require('../Helpers/TextHelpers');
-
 const UserSubscription = require('../Classes/UserSubscription');
 const GroupSubscription = require('../Classes/GroupSubscription');
 
 const subscribeGroup = async (ctx) => {
-  const group = GroupSubscription.get(ctx.chat.id);
+  const group = await GroupSubscription.get(ctx.chat.id);
   try {
     if (group) {
-      ctx.reply('Sorry, you have already been subscribed!');
-      return;
+      return ctx.reply('Sorry, you have already been subscribed!');
     }
     const newGroup = new GroupSubscription(ctx.chat.id, ctx.chat.title);
     await newGroup.create();
-    ctx.reply(removeIndent`This group has been subscribed to the Emotjournal. you will now receive daily emotional journaling and roundups!`);
+    return ctx.reply(removeIndent`This group has been subscribed to the Emotjournal. you will now receive daily emotional journaling and roundups!`);
   } catch (err) {
-    ctx.reply(
+    return ctx.reply(
       'Sorry, there was an issue subscribing the group. Please try again!',
     );
   }
@@ -29,14 +24,13 @@ const subscribeUser = async (ctx) => {
   const user = UserSubscription.get(ctx.message.from.id);
   try {
     if (user) {
-      ctx.reply('Sorry, you have already been subscribed!');
-      return;
+      return ctx.reply('Sorry, you have already been subscribed!');
     }
     const newUser = new UserSubscription(ctx.message.from);
     await newUser.create();
-    ctx.reply('You have been subscribed to the Emotjournal!');
+    return ctx.reply('You have been subscribed to the Emotjournal!');
   } catch (err) {
-    ctx.reply(
+    return ctx.reply(
       'Sorry, there was an issue updating your Subscription. Please try again!',
     );
   }

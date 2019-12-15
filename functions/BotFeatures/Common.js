@@ -1,8 +1,3 @@
-const Telegraf = require('telegraf');
-
-const bot = new Telegraf(process.env.BOT_TOKEN);
-
-
 const CmdHelpers = require('../Helpers/CommandHelpers');
 const { removeIndent } = require('../Helpers/TextHelpers');
 
@@ -19,7 +14,7 @@ Hello there! This is Retro bot! Here are the commands you can use to start colle
 /unsubscribe - stop doing daily emotion journaling
 `;
 
-const InitializeCommonFunctions = () => {
+const InitializeCommonFunctions = (bot) => {
   bot.command('help', (ctx) => {
     ctx.reply(welcomeMsg);
   });
@@ -30,7 +25,7 @@ const InitializeCommonFunctions = () => {
       return ctx.reply(welcomeMsg);
     }
     const subArgs = args[1].split('_');
-    CmdHelpers.startArgsHelper(subArgs, ctx);
+    return CmdHelpers.startArgsHelper(subArgs, ctx);
   });
 };
 
