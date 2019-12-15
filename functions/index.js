@@ -36,10 +36,7 @@ exports.scheduledUserActions = functions.pubsub
   .schedule('*/15 * * * *')
   // .schedule('15 17 * * 1-5')
   .timeZone('Asia/Singapore')
-  .onRun(userCrons.updateUserEmoteJournal);
-
-exports.scheduledGroupActions = functions.pubsub
-  .schedule('*/15 * * * *')
-  // .schedule('15 17 * * 1-5')
-  .timeZone('Asia/Singapore')
-  .onRun(groupCrons.updateTeamEmoteJournal);
+  .onRun(() => {
+    userCrons.updateUserEmoteJournal();
+    groupCrons.updateTeamEmoteJournal();
+  });
