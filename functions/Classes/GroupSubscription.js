@@ -2,7 +2,7 @@ const Moment = require('moment');
 const { firestore } = require('../firebase');
 
 class GroupSubscription {
-  constructor(chatId, chatTitle) {
+  constructor(chatId, chatTitle = '') {
     this.chatId = chatId;
     this.chatTitle = chatTitle;
   }
@@ -16,10 +16,12 @@ class GroupSubscription {
   }
 
   async create() {
-    await firestore.collection('group_subscriptions').doc(this.chatId.toString()).set({
-      chatId: this.chatId.toString(),
-      chatTitle: this.chatTitle,
-    });
+    return firestore.collection('group_subscriptions')
+      .doc(this.chatId.toString())
+      .set({
+        chatId: this.chatId.toString(),
+        chatTitle: this.chatTitle,
+      });
   }
 
   async delete() {
@@ -28,7 +30,7 @@ class GroupSubscription {
         'Unable to update subscription, some information is missing from the records',
       );
     }
-    await firestore
+    return firestore
       .collection('group_subscriptions')
       .doc(this.chatId)
       .delete();
