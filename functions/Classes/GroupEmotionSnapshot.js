@@ -1,15 +1,17 @@
 const Moment = require('moment');
 const { firestore } = require('../firebase');
 
+const Moment = require('moment');
+const { firestore } = require('../firebase');
+
 const collectionName = 'group_emotion_record';
 
 class GroupEmotionRecord {
-  constructor(chatId, userId, emotion, createdAt, modifiedAt) {
+  constructor(chatId, userId, teamEmotionRecords, createdAt, modifiedAt) {
     this.chatId = chatId;
     this.userId = userId;
-    this.emotion = emotion;
+    this.teamEmotionRecords = teamEmotionRecords;
     this.createdAt = createdAt || Moment().valueOf();
-    this.modifiedAt = modifiedAt || Moment().valueOf();
   }
 
   async get() {

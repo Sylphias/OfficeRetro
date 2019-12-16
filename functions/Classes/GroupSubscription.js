@@ -9,7 +9,7 @@ class GroupSubscription {
 
   static async get(chatId) {
     const query = await firestore.collection('group_subscriptions')
-      .doc(chatId)
+      .doc(chatId.toString())
       .get();
     const data = query.data();
     return data ? new GroupSubscription(data.chatId, data.chatTitle) : undefined;
@@ -32,13 +32,13 @@ class GroupSubscription {
     }
     return firestore
       .collection('group_subscriptions')
-      .doc(this.chatId)
+      .doc(this.chatId.toString())
       .delete();
   }
 
   async getCurrentDayTeamEmotion() {
     const query = await firestore
-      .collection('emotion_record')
+      .collection('group_emotion_record')
       .where(
         'createdAt',
         '>',

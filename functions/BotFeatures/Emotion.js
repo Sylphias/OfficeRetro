@@ -1,4 +1,4 @@
-const EmotjournalWizard = require('../Wizards/EmotjournalWizard');
+const { EmotjournalWizard, GroupEmotjournalWizard } = require('../Wizards');
 const CmdHelpers = require('../Helpers/CommandHelpers');
 const { removeIndent } = require('../Helpers/TextHelpers');
 const UserSubscription = require('../Classes/UserSubscription');
@@ -79,10 +79,9 @@ const unsubscribeToEmotionJournaling = async (ctx) => {
 
 const InitializeEmotionFunction = (bot, stage) => {
   stage.register(EmotjournalWizard);
+  stage.register(GroupEmotjournalWizard);
 
-  bot.action('update_emotjournal', async (ctx) => {
-    ctx.scene.enter('recordEmotjournal');
-  });
+  bot.action('update_emotjournal', async (ctx) => ctx.scene.enter('recordEmotjournal'));
 
   bot.command('subscribe', subscribeToEmotionJournaling);
   bot.command('unsubscribe', unsubscribeToEmotionJournaling);

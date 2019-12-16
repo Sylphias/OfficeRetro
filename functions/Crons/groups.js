@@ -17,8 +17,8 @@ module.exports = {
         const group = new GroupSubscription(groupInfo.chatId, groupInfo.chatTitle);
         const emotions = await group.getCurrentDayTeamEmotion();
         const message = emotions.length === 0
-          ? 'Sorry, nobody filled up their emotion journals yesterday... '
-          : removeIndent`This is a summary of how your team felt after yesterday: ${emotions}`;
+          ? 'Sorry, nobody filled up their emotion journals just now... '
+          : removeIndent`This is a summary of how your team felt today: ${emotions}`;
         await telegramClient.sendMessage(groupInfo.chatId, message);
       } catch (err) {
         telegramClient.sendMessage(
@@ -34,7 +34,7 @@ module.exports = {
     groupDocs.map(async (doc) => {
       const groupInfo = doc.data();
       try {
-        await telegramClient.sendMessage(
+        const msgInfo = await telegramClient.sendMessage(
           groupInfo.chatId,
           'Hello everybody! Time to do our daily team health updates, click on the button below to begin!',
           {
@@ -47,7 +47,7 @@ module.exports = {
         );
       } catch (err) {
         console.error(
-          'User has not allowed the bot to converse with him/her, removing user from subscription',
+          'group has not allowed the bot to converse with him/her, removing group from subscription',
         );
         try {
           if (err.code === 403) {
