@@ -3,6 +3,7 @@ const Markup = require('telegraf/markup');
 
 const SubscriptionHelper = require('../Helpers/SubscriptionHelpers');
 const GroupSubscription = require('../Classes/GroupSubscription');
+const GroupEmotionSnapshot = require('../Classes/GroupEmotionSnapshot');
 const { removeIndent } = require('../Helpers/TextHelpers');
 const config = require('../config');
 
@@ -15,10 +16,14 @@ module.exports = {
       const groupInfo = queryDoc.data();
       try {
         const group = new GroupSubscription(groupInfo.chatId, groupInfo.chatTitle);
-        const emotions = await group.getCurrentDayTeamEmotion();
-        const message = emotions.length === 0
+        const emotionRecords = await group.getCurrentDayTeamEmotion();
+        // create the snapshot for data analysis
+        const grpSnapshot = new GroupEmotionSnapshot(group.chatId, emotionRecords);
+        grpSnapshot.save();
+        const emotionSummaryString = emotionRecords.reduce((accumulator, userEmotion) => `${accumulator} ${userEmotion.emotion}`, '');
+        const message = emotionRecords.length === 0
           ? 'Sorry, nobody filled up their emotion journals just now... '
-          : removeIndent`This is a summary of how your team felt today: ${emotions}`;
+          : removeIndent`This is a summary of how your team felt today: ${emotionSummaryString}`;
         await telegramClient.sendMessage(groupInfo.chatId, message);
       } catch (err) {
         telegramClient.sendMessage(

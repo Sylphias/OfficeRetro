@@ -1,48 +1,37 @@
 const Moment = require('moment');
 const { firestore } = require('../firebase');
 
-const Moment = require('moment');
-const { firestore } = require('../firebase');
+const collectionName = 'group_emotion_snapshot';
 
-const collectionName = 'group_emotion_record';
-
-class GroupEmotionRecord {
-  constructor(chatId, userId, teamEmotionRecords, createdAt, modifiedAt) {
+class GroupEmotionSnapshot {
+  constructor(chatId, teamEmotionRecords, createdAt) {
+    this.uuid = '';
     this.chatId = chatId;
-    this.userId = userId;
     this.teamEmotionRecords = teamEmotionRecords;
     this.createdAt = createdAt || Moment().valueOf();
   }
 
-  async get() {
-    if (!this.chatId || !this.userId) {
-      throw new Error('Insufficient data to find record.');
-    }
-
+  // TODO : retrieve Snapshots
+  static async getLatestNSnapshot(numberOfSnapshots) {
     const docRef = await firestore.collection(collectionName).doc(this.getDocId()).get();
-    this.emotion = docRef.data().emotion;
+    this.teamEmotionRecords = docRef.data().teamEmotionRecords;
     this.createdAt = docRef.data().createdAt;
     this.modifiedAt = docRef.data().modifiedAt;
   }
 
-  async delete() {
+  static async deleteSnapshot() {
     await firestore.collection(collectionName)
       .doc(this.getDocId()).delete();
   }
 
-  getDocId() {
-    return `${this.chatId.toString()}_${this.userId.toString()}`;
-  }
-
   async save() {
-    await firestore.collection(collectionName).doc(this.getDocId()).set({
+    await firestore.collection(collectionName).add({
       chatId: this.chatId,
-      userId: this.userId,
-      emotion: this.emotion,
+      teamEmotionRecords: this.teamEmotionRecords,
       createdAt: this.createdAt,
       modifiedAt: Moment().valueOf(),
-    }, { merge: true });
+    });
   }
 }
 
-module.exports = GroupEmotionRecord;
+module.exports = GroupEmotionSnapshot;

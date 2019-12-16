@@ -36,6 +36,7 @@ class GroupSubscription {
       .delete();
   }
 
+  // This method retrieves all emotions of people who have submitted for that particular group in the last day.
   async getCurrentDayTeamEmotion() {
     const query = await firestore
       .collection('group_emotion_record')
@@ -47,10 +48,10 @@ class GroupSubscription {
           .valueOf(),
       )
       .get();
-    const emotionInString = query.docs
+    const teamEmotionRecords = query.docs
       .filter((doc) => this.chatId === doc.data().chatId)
-      .reduce((accumulator, doc) => accumulator + doc.data().emotion, '');
-    return emotionInString;
+      .map((doc) => ({ userId: doc.data().userId, emotion: doc.data().emotion }));
+    return teamEmotionRecords;
   }
 }
 
