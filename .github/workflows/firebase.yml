@@ -33,7 +33,7 @@ jobs:
           args: deploy --only functions
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PROJECT_ID: aura-tele-bot-staging
+          PROJECT_ID: aura-bot-staging
   deploy_production:
     if: github.ref == 'master'
     name: Deploy to production
@@ -50,4 +50,4 @@ jobs:
           args: deploy --only functions
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PROJECT_ID: aura-tele-bot-production
+          PROJECT_ID: aura-tele-bot
