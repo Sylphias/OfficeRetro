@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - staging
 
 jobs:
   build:
@@ -12,19 +13,40 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
       - name: Test
         run: npm test
-  deploy:
-    name: Deploy
+  deploy_staging:
+    if: github.ref == 'staging'
+    name: Deploy to staging
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
+      - name: Install Dependencies
+        run: pushd functions && npm ci
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only functions
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: aura-bot-staging
+  deploy_production:
+    if: github.ref == 'master'
+    name: Deploy to production
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: pushd functions && npm ci
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: aura-tele-bot
