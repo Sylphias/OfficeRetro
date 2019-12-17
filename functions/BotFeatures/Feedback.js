@@ -3,6 +3,7 @@ const Markup = require('telegraf/markup');
 
 const FeedbackEntry = require('../Wizards/FeedbackEntryWizard');
 const FeedbackSession = require('../Classes/FeedbackSession');
+const config = require('../config');
 
 const InitializeFeedbackFunctions = (bot, stage) => {
   stage.register(FeedbackEntry);
@@ -30,7 +31,7 @@ const InitializeFeedbackFunctions = (bot, stage) => {
           [
             Markup.urlButton(
               'Give Feedback',
-              `${process.env.BOT_URL}?start=giveFeedback_${doc.id.toString()}`,
+              `${config.botUrl}?start=giveFeedback_${doc.id.toString()}`,
             ),
           ],
         ]),

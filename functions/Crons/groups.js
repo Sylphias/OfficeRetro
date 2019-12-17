@@ -43,11 +43,9 @@ module.exports = {
           groupInfo.chatId,
           'Hello everybody! Time to do our daily team health updates, click on the button below to begin!',
           {
-            reply_markup: {
-              inline_keyboard: [
-                [Markup.urlButton('Lets begin! It will only take a second!', `${process.env.BOT_URL}?start=emotionJournal_${groupInfo.chatId.toString()}`)],
-              ],
-            },
+            reply_markup: Markup.inlineKeyboard(
+              [[Markup.urlButton('Lets begin! It will only take a second!', `${config.botUrl}?start=emotionJournal_${groupInfo.chatId.toString()}`)]],
+            ),
           },
         );
       } catch (err) {
