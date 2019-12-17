@@ -21,7 +21,7 @@ const subscribeGroup = async (ctx) => {
 };
 
 const subscribeUser = async (ctx) => {
-  const user = UserSubscription.get(ctx.message.from.id);
+  const user = await UserSubscription.get(ctx.message.from.id);
   try {
     if (user) {
       return ctx.reply('Sorry, you have already been subscribed!');

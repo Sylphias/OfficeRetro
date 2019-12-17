@@ -21,10 +21,10 @@ stage.command('cancel', leave());
 
 bot.use((ctx, next) => {
   // Debugging/loggin
-  console.log(JSON.stringify({
+  console.log(`\n${JSON.stringify({
     updateType: ctx.updateType,
     update: ctx.update,
-  }));
+  })}`);
   return next();
 });
 
