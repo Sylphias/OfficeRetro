@@ -19,6 +19,15 @@ bot.use(session());
 bot.use(stage.middleware());
 stage.command('cancel', leave());
 
+bot.use((ctx, next) => {
+  // Debugging/loggin
+  console.log(JSON.stringify({
+    updateType: ctx.updateType,
+    update: ctx.update,
+  }));
+  return next();
+});
+
 CommonFeatures(bot, stage);
 FeedbackFeatures(bot, stage);
 EmotionFeatures(bot, stage);
