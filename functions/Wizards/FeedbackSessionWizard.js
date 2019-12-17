@@ -12,8 +12,13 @@ const requestFeedbackSessionName = (ctx) => {
 };
 createFeedbackSession.on('message', async (ctx) => {
   const msgInfo = ctx.message.from;
-  const fbs = new FeedbackSession(msgInfo.id, msgInfo.username, msgInfo.first_name, ctx.message.text);
-  const doc = await fbs.save();
+  const fbs = new FeedbackSession({
+    userId: msgInfo.id,
+    username: msgInfo.username,
+    name: msgInfo.first_name,
+    title: ctx.message.text,
+  });
+  const doc = await fbs.create();
   ctx.reply('Please click on the button below to submit your feedback! Wait for the send feedback privately button to appear!', {
     reply_markup: Markup.inlineKeyboard([
       Markup.switchToCurrentChatButton('Give Feedback', doc.id.toString()),
