@@ -1,10 +1,10 @@
 const functions = require('firebase-functions');
-const config = require('./config');
+
 const bot = require('./bot');
-// const userCrons = require('./Crons/user');
+const userCrons = require('./Crons/user');
 const groupCrons = require('./Crons/groups');
 
-exports[config.botPath] = functions
+exports.mysecretbotendpoint = functions
   .region('asia-east2')
   .https.onRequest(async (req, res) => {
     // Logging

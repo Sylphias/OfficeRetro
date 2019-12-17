@@ -5,7 +5,6 @@ if (process.env.NODE_ENV === 'production') {
   module.exports = {
     botToken: config.prod.bot.token,
     botUrl: config.prod.bot.url,
-    botPath: config.prod.bot.path,
   };
 } else {
   module.exports = {

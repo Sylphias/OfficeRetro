@@ -28,7 +28,7 @@ jobs:
         run: pushd functions && npm ci
       - name: Set firebase env vars
         uses: w9jds/firebase-action@master
-        with:
+        with: 
           args: functions:config:set prod.bot.token=${{ secrets.STAGE_BOT_TOKEN }} prod.bot.url=${{ secrets.STAGE_BOT_URL }}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
@@ -52,7 +52,7 @@ jobs:
         run: pushd functions && npm ci
       - name: Set firebase env vars
         uses: w9jds/firebase-action@master
-        with:
+        with: 
           args: functions:config:set prod.bot.token=${{ secrets.PROD_BOT_TOKEN }} prod.bot.url=${{ secrets.PROD_BOT_URL }}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
@@ -64,3 +64,4 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           PROJECT_ID: aura-tele-bot
+          
