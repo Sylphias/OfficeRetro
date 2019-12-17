@@ -1,4 +1,4 @@
-const removeIndent = (strings,...arguments) => {
+const removeIndent = (strings, ...arguments) => {
   // substitution vars first.
   let output = '';
   for (let i = 0; i < arguments.length; i++) {

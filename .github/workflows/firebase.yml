@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - staging
 
 jobs:
   build:
@@ -12,19 +13,55 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
       - name: Test
         run: npm test
-  deploy:
-    name: Deploy
+  deploy_staging:
+    if: github.ref == 'refs/heads/staging'
+    name: Deploy to staging
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
+      - name: Install Dependencies
+        run: pushd functions && npm ci
+      - name: Set firebase env vars
+        uses: w9jds/firebase-action@master
+        with: 
+          args: functions:config:set prod.bot.token=${{ secrets.STAGE_BOT_TOKEN }} prod.bot.url=${{ secrets.STAGE_BOT_URL }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: aura-bot-staging
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only functions
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: aura-bot-staging
+  deploy_production:
+    if: github.ref == 'refs/heads/master'
+    name: Deploy to production
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: pushd functions && npm ci
+      - name: Set firebase env vars
+        uses: w9jds/firebase-action@master
+        with: 
+          args: functions:config:set prod.bot.token=${{ secrets.PROD_BOT_TOKEN }} prod.bot.url=${{ secrets.PROD_BOT_URL }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: aura-tele-bot
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: aura-tele-bot
+          
