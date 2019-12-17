@@ -17,13 +17,7 @@ bot.use(session());
 bot.use(stage.middleware());
 stage.command('cancel', leave());
 
-bot.use((ctx, next) => {
-  console.log(ctx);
-  return next();
-});
-
 CommonFeatures(bot);
 FeedbackFeatures(bot, stage);
 EmotionFeatures(bot, stage);
-
 module.exports = bot;

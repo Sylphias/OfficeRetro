@@ -51,11 +51,12 @@ module.exports = {
           },
         );
       } catch (err) {
-        console.error(
-          'group has not allowed the bot to converse with him/her, removing group from subscription',
-        );
+        console.error(err);
         try {
           if (err.code === 403) {
+            console.error(
+              'group has not allowed the bot to converse with him/her, removing group from subscription',
+            );
             const group = new GroupSubscription(groupInfo.chatId, groupInfo.chatTitle);
             await group.unsubscribe();
             console.log('Successfully removed subscription');

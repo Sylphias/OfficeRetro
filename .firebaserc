@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "aura-tele-bot-2f52b"
+    "default": "aura-tele-bot-2f52b",
+    "production": "aura-tele-bot",
+    "staging": "aura-bot-staging"
   }
 }
