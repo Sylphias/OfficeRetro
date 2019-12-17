@@ -42,9 +42,3 @@ exports.scheduledUserActions = functions.pubsub
       groupCrons.groupRecordEmotion(),
     ]);
   });
-
-exports.scheduleGroupRecordActions = functions.pubsub
-  .schedule('15 20 * * 1-5')
-  .timeZone('Asia/Singapore')
-  .onRun(() => {
-  });
