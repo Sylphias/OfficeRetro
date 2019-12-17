@@ -33,11 +33,13 @@ exports.mysecretbotendpoint = functions
   });
 
 exports.scheduledUserActions = functions.pubsub
-  .schedule('*/15 * * * *')
-  // .schedule('15 17 * * 1-5')
+  // .schedule('*/15 * * * *')
+  .schedule('15 17 * * 1-5')
   .timeZone('Asia/Singapore')
-  .onRun(() => {
-    userCrons.updateUserEmoteJournal();
-    groupCrons.dailyGroupEmotionMessage();
-    groupCrons.groupRecordEmotion();
+  .onRun(async () => {
+    await Promise.all([
+      userCrons.updateUserEmoteJournal(),
+      groupCrons.dailyGroupEmotionMessage(),
+      groupCrons.groupRecordEmotion(),
+    ]);
   });
