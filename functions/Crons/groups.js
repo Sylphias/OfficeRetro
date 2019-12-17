@@ -22,8 +22,8 @@ module.exports = {
         grpSnapshot.save();
         const emotionSummaryString = emotionRecords.reduce((accumulator, userEmotion) => `${accumulator} ${userEmotion.emotion}`, '');
         const message = emotionRecords.length === 0
-          ? 'Sorry, nobody filled up their emotion journals just now... '
-          : removeIndent`This is a summary of how your team felt today: ${emotionSummaryString}`;
+          ? 'Sorry, nobody filled up their emotion journals yesterday... '
+          : removeIndent`This is a summary of how your team felt yesterday: ${emotionSummaryString}`;
         await telegramClient.sendMessage(groupInfo.chatId, message);
       } catch (err) {
         telegramClient.sendMessage(

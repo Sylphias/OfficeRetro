@@ -41,7 +41,7 @@ class GroupSubscription {
     const query = await firestore
       .collection('group_emotion_record')
       .where(
-        'createdAt',
+        'modifiedAt',
         '>',
         Moment()
           .subtract(1, 'days')

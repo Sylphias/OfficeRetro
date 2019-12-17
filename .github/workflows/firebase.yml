@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - jy
       - staging
 
 jobs:
@@ -18,7 +17,7 @@ jobs:
       - name: Test
         run: npm test
   deploy_staging:
-    if: github.ref == 'staging'
+    if: github.ref == 'refs/heads/staging'
     name: Deploy to staging
     needs: build
     runs-on: ubuntu-latest
@@ -35,7 +34,7 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           PROJECT_ID: aura-bot-staging
   deploy_production:
-    if: github.ref == 'master'
+    if: github.ref == 'refs/heads/master'
     name: Deploy to production
     needs: build
     runs-on: ubuntu-latest

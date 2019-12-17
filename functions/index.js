@@ -32,18 +32,19 @@ exports.mysecretbotendpoint = functions
     }
   });
 
-exports.scheduledGroupActions = functions.pubsub
+exports.scheduledUserActions = functions.pubsub
   // .schedule('*/15 * * * *')
   .schedule('15 17 * * 1-5')
   .timeZone('Asia/Singapore')
-  .onRun(() => {
-    // userCrons.updateUserEmoteJournal();
-    groupCrons.groupRecordEmotion();
+  .onRun(async () => {
+    await Promise.all([
+      groupCrons.dailyGroupEmotionMessage(),
+      groupCrons.groupRecordEmotion(),
+    ]);
   });
 
 exports.scheduleGroupRecordActions = functions.pubsub
   .schedule('15 20 * * 1-5')
   .timeZone('Asia/Singapore')
   .onRun(() => {
-    groupCrons.dailyGroupEmotionMessage();
   });
