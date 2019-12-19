@@ -13,7 +13,7 @@ class FeedbackSession {
     this.title = data.title;
     this.questions = [
       { title: 'How do you feel about this week\'s work' },
-      { title: 'If there was one thing that can be done better this week, what would it be?' },
+      { title: 'If there was one thing that I can do better this week, what would it be?' },
       { title: 'Why so? (Provide more context and information)' },
     ];// for now the questions are fixed
     this.dateCreated = data.dateCreated ? data.dateCreated : Moment().valueOf();
