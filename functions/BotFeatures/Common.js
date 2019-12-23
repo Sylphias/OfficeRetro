@@ -5,13 +5,11 @@ const welcomeMsg = removeIndent`
 Hello there! This is Retro bot! Here are the commands you can use to start collecting feedback:
 
 ----- Group Commands -----
+/start,/help - Displays the commands that this bt has.
 /startSession <Session Title> - starts a new feedback session with a default questionnaire (eg /startSession Sprint retro 29th aug)
-/start <feedback-id> - starts a feedback entry for a particular session
-/startTeamEmotionJournal - Subscribe to daily team emotion monitoring
-
------ Private Commands (1-1 chat with bot) -----
-/subscribe - be able to record a daily emotion journal
+/subscribe - be able to record a daily emotion journal for the group
 /unsubscribe - stop doing daily emotion journaling
+
 `;
 
 const InitializeCommonFunctions = (bot) => {

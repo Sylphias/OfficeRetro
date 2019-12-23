@@ -5,7 +5,7 @@ const { dailyGroupEmotionMessage, groupRecordEmotion } = require('../functions/C
 const DeclareGroupCronJobs = () => {
 // 0 15 9 * * 1-5
   const GroupDailyEmotionMessage = new CronJob(
-    '*/10 * * * * 1-5',
+    '0 15 9 * * 1-5',
     dailyGroupEmotionMessage,
     null,
     true,
@@ -13,7 +13,7 @@ const DeclareGroupCronJobs = () => {
   );
 
   const GroupRecordEmotion = new CronJob(
-    '*/10 * * * * 1-5',
+    '0 15 9 * * 1-5',
     groupRecordEmotion,
     null,
     true,

@@ -4,3 +4,4 @@ node_modules
 firebase-aura-tele.json
 firebase-credentials.json
 *.log
+.runtimeconfig.json

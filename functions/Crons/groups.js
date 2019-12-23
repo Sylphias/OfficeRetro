@@ -9,6 +9,29 @@ const config = require('../config');
 
 const telegramClient = new Telegram(config.botToken);
 
+const unsubscribeIfForbidden = async (groupInfo, err) => {
+  try {
+    // Error 400 in this case means that the bot is looking at a record that was entered by another bot.
+    // This should never be the case in production but is handled anyways.
+    if (err.code === 403 || (err.code === 400 && /[.]*(chat not found)[.]*/.test(err.message))) {
+      console.error(
+        'group has not allowed the bot to converse with him/her, removing group from subscription',
+      );
+      const group = new GroupSubscription(groupInfo.chatId, groupInfo.chatTitle);
+      await group.delete();
+      console.log('Successfully removed subscription');
+    } else {
+      telegramClient.sendMessage(
+        groupInfo.chatId,
+        "Failed to retrieve team's emotional summary for today.",
+      );
+    }
+  } catch (error) {
+    console.log('Error while trying to update subscription status');
+    console.error(error);
+  }
+};
+
 module.exports = {
   async dailyGroupEmotionMessage() {
     const groupQueryDocs = await SubscriptionHelper.GetActiveGroupSubscriptions();
@@ -26,11 +49,8 @@ module.exports = {
           : removeIndent`This is a summary of how your team felt yesterday: ${emotionSummaryString}`;
         await telegramClient.sendMessage(groupInfo.chatId, message);
       } catch (err) {
-        telegramClient.sendMessage(
-          groupInfo.chatId,
-          "Failed to retrieve team's emotional summary for today.",
-        );
         console.error(err);
+        await unsubscribeIfForbidden(groupInfo, err);
       }
     });
   },
@@ -49,20 +69,8 @@ module.exports = {
           },
         );
       } catch (err) {
+        unsubscribeIfForbidden(groupInfo, err);
         console.error(err);
-        try {
-          if (err.code === 403) {
-            console.error(
-              'group has not allowed the bot to converse with him/her, removing group from subscription',
-            );
-            const group = new GroupSubscription(groupInfo.chatId, groupInfo.chatTitle);
-            await group.unsubscribe();
-            console.log('Successfully removed subscription');
-          }
-        } catch (error) {
-          console.log('Error while trying to update subscription status');
-          console.error(error);
-        }
       }
     });
   },
