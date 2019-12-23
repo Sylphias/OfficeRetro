@@ -8,12 +8,11 @@ const question = (ctx) => {
   const messageInfo = ctx.reply('Reply with an emoji that best suits how you feel today!', {
     parse_mode: 'html',
     reply_markup: Markup.inlineKeyboard([
-      Markup.callbackButton('😊', '😊'),
-      Markup.callbackButton('😞', '😞'),
-      Markup.callbackButton('😴', '😴'),
-      Markup.callbackButton('🤬', '🤬'),
-      Markup.callbackButton('😢', '😢'),
-      Markup.callbackButton('💩', '💩'),
+      [Markup.callbackButton('😖 - Stressed', '😖')],
+      [Markup.callbackButton('🤬 - Frustrated', '🤬')],
+      [Markup.callbackButton('😢 - Sad', '😢')],
+      [Markup.callbackButton('😴 - Tired', '😴')],
+      [Markup.callbackButton('😊 - Happy', '😊')],
     ]),
   });
   ctx.scene.state.messageInfo = messageInfo;

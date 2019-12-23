@@ -7,7 +7,7 @@ const CommandHelpers = require('../Helpers/CommandHelpers');
 const FeedbackEntry = require('../Classes/FeedbackEntry');
 
 const cancel = async (ctx) => {
-  await CommandHelpers.updateCallbackMessage(ctx.chat.id, ctx.scene.session.currentMessageId, 'Feedback session ended!');
+  await CommandHelpers.updateCallbackMessage(ctx.chat.id, ctx.scene.session.messageId, 'Feedback session ended!');
   ctx.reply(
     RemoveIndent`Cancelling Feedback, you can start again by clicking on the Give Feedback button!`,
   );
@@ -16,7 +16,7 @@ const cancel = async (ctx) => {
 
 const submit = async (ctx) => {
   await ctx.scene.session.entry.save();
-  await CommandHelpers.updateCallbackMessage(ctx.chat.id, ctx.scene.session.currentMessageId, 'Feedback session ended!');
+  await CommandHelpers.updateCallbackMessage(ctx.chat.id, ctx.scene.session.messageId, 'Feedback session ended!');
   ctx.reply(RemoveIndent`
     Thank you for sending in your feedback!
   `);
@@ -41,8 +41,11 @@ const question1 = async (ctx) => {
     {
       parse_mode: 'html',
       reply_markup: Markup.inlineKeyboard([
-        [Markup.callbackButton('😊', '😊'), Markup.callbackButton('😞', '😞')],
-        [Markup.callbackButton('🤬', '🤬'), Markup.callbackButton('😢', '😢')],
+        [Markup.callbackButton('😖 - Stressed', '😖')],
+        [Markup.callbackButton('🤬 - Frustrated', '🤬')],
+        [Markup.callbackButton('😢 - Sad', '😢')],
+        [Markup.callbackButton('😴 - Tired', '😴')],
+        [Markup.callbackButton('😊 - Happy', '😊')],
       ]),
     },
   );
@@ -84,7 +87,7 @@ const question3 = new Composer();
 
 question3.action('endFeedback', submit);
 question3.action('cancel', cancel);
-question2.command('cancel', cancel);
+question3.command('cancel', cancel);
 question3.on('text', async (ctx) => {
   ctx.webhookReply = false;
   await CommandHelpers.updateCallbackMessage(ctx.chat.id, ctx.scene.session.messageId, 'Thank you for answering the question!');
