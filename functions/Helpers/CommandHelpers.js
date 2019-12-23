@@ -5,8 +5,8 @@ const telegramClient = new Telegram(config.botToken);
 
 const updateCallbackMessage = async (chatId, messageId, text) => {
   try {
-    await telegramClient.editMessageReplyMarkup(chatId, messageId);
-    await telegramClient.editMessageText(chatId, messageId, null, text);
+    telegramClient.editMessageReplyMarkup(chatId, messageId);
+    telegramClient.editMessageText(chatId, messageId, null, text);
   } catch (err) {
     console.log(err);
   }
