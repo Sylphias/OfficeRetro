@@ -11,8 +11,9 @@ const telegramClient = new Telegram(config.botToken);
 
 const unsubscribeIfForbidden = async (groupInfo, err) => {
   try {
-    // Error 400 could be also malformed messages. However, those should not cross staging.
-    if (err.code === 403 || (err.code === 400 && err.message.test(/[.]*(chat not found)[.]*/))) {
+    // Error 400 in this case means that the bot is looking at a record that was entered by another bot.
+    // This should never be the case in production but is handled anyways.
+    if (err.code === 403 || (err.code === 400 && /[.]*(chat not found)[.]*/.test(err.message))) {
       console.error(
         'group has not allowed the bot to converse with him/her, removing group from subscription',
       );
@@ -30,9 +31,6 @@ const unsubscribeIfForbidden = async (groupInfo, err) => {
     console.error(error);
   }
 };
-
-// Possible thing to note:
-// If there is a group that has removed the bot. does it continue?
 
 module.exports = {
   async dailyGroupEmotionMessage() {
