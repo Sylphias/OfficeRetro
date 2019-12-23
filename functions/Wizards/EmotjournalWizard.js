@@ -8,12 +8,11 @@ const EmotionRecord = require('../Classes/EmotionRecord');
 const question = (ctx) => {
   ctx.reply('Reply with an emoji that best suits how you feel today!', {
     reply_markup: Markup.inlineKeyboard([
-      Markup.callbackButton('😊', '😊'),
-      Markup.callbackButton('😞', '😞'),
-      Markup.callbackButton('😴', '😴'),
-      Markup.callbackButton('🤬', '🤬'),
-      Markup.callbackButton('😢', '😢'),
-      Markup.callbackButton('💩', '💩'),
+      [Markup.callbackButton('😖 - Stressed', '😖')],
+      [Markup.callbackButton('🤬 - Frustrated', '🤬')],
+      [Markup.callbackButton('😢 - Sad', '😢')],
+      [Markup.callbackButton('😴 - Tired', '😴')],
+      [Markup.callbackButton('😊 - Happy', '😊')],
     ]),
   });
   ctx.wizard.next();
