@@ -4,8 +4,8 @@ const config = require('../config');
 const telegramClient = new Telegram(config.botToken);
 
 const updateCallbackMessage = async (chatId, messageId, text) => {
-  await telegramClient.editMessageReplyMarkup(chatId, messageId);
-  await telegramClient.editMessageText(chatId, messageId, null, text);
+  telegramClient.editMessageReplyMarkup(chatId, messageId);
+  telegramClient.editMessageText(chatId, messageId, null, text);
 };
 
 const deleteMessage = (chatId, messageId) => {
