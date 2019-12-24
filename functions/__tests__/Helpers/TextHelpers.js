@@ -1,4 +1,4 @@
-const TextHelper = require('../../../Helpers/TextHelpers');
+const TextHelper = require('../../Helpers/TextHelpers');
 
 describe('Text helpers should manipulate text', () => {
   test('removeIndent should remove leading spaces caused by newlines', () => {
