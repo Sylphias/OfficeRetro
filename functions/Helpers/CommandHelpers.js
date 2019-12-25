@@ -9,8 +9,10 @@ const updateCallbackMessage = async (chatId, messageId, text) => {
       telegramClient.editMessageReplyMarkup(chatId, messageId),
       telegramClient.editMessageText(chatId, messageId, null, text),
     ]);
+    return true;
   } catch (err) {
     console.log(err);
+    return false;
   }
 };
 
@@ -19,6 +21,7 @@ const deleteMessage = (chatId, messageId) => {
 };
 
 const isSameChat = (ctx) => ctx.chat.id === ctx.message.from.id;
+
 const startArgsHelper = async (arg, ctx) => {
   switch (arg[0]) {
     case 'emotionJournal':
