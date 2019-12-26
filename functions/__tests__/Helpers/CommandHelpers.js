@@ -29,8 +29,25 @@ describe('Command Helpers should have operations that assist in carrying bot com
       expect(CommandHelpers.isSameChat(ctx1)).toBeTruthy();
       expect(CommandHelpers.isSameChat(ctx2)).toBeFalsy();
     });
-  test('isSameChat should throw an error if no input or malformed input is entered',
+  test('isSameChat should throw an error if no input is entered',
     () => {
-      expect(() => { CommandHelpers.isSameChat(); }).toThrow(TypeError);
+      expect(() => { CommandHelpers.isSameChat(); }).toThrow();
     });
+
+  test('startArgsHelper should enter the correct scene based on args produced', () => {
+    const ctx = { scene: { enter: jest.fn() } };
+    const arg1 = ['emotionJournal', 1];
+    const arg2 = ['giveFeedback'];
+    CommandHelpers.startArgsHelper(arg1, ctx);
+    expect(ctx.scene.enter.mock.calls).toEqual([['recordGroupEmotjournal', { chatId: 1 }]]);
+    ctx.scene.enter.mockClear();
+    CommandHelpers.startArgsHelper(arg2, ctx);
+    expect(ctx.scene.enter.mock.calls).toEqual([['feedbackEntry']]);
+  });
+  test('If no arguments or invalid arguments are passed into startArgsHelper, it should throw', () => {
+    const ctx = { scene: { enter: jest.fn() } };
+    const arg = [''];
+    expect(() => { CommandHelpers.startArgsHelper(); }).toThrow();
+    expect(() => { CommandHelpers.startArgsHelper(arg, ctx); }).toThrow();
+  });
 });

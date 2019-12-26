@@ -37,6 +37,7 @@ class GroupSubscription {
   }
 
   // This method retrieves all emotions of people who have submitted for that particular group in the last day.
+  // TODO: Filter out people who have already submitted.
   async getCurrentDayTeamEmotion() {
     const query = await firestore
       .collection('group_emotion_record')

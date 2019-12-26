@@ -22,7 +22,10 @@ const deleteMessage = (chatId, messageId) => {
 
 const isSameChat = (ctx) => ctx.chat.id === ctx.message.from.id;
 
-const startArgsHelper = async (arg, ctx) => {
+const startArgsHelper = (arg, ctx) => {
+  if (!ctx || !arg) {
+    throw new Error('No input, unable to process');
+  }
   switch (arg[0]) {
     case 'emotionJournal':
       // arg[1] = GroupSubscription.chatId
@@ -32,6 +35,7 @@ const startArgsHelper = async (arg, ctx) => {
     case 'giveFeedback':
       return ctx.scene.enter('feedbackEntry');
     default:
+      throw new Error('Invalid Scene Input');
   }
 };
 
