@@ -19,7 +19,7 @@ class GroupEmotionSnapshot {
     this.modifiedAt = docRef.data().modifiedAt;
   }
 
-  static async deleteSnapshot() {
+  async deleteSnapshot() {
     await firestore.collection(collectionName)
       .doc(this.getDocId()).delete();
   }
