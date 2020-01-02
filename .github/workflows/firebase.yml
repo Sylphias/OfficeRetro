@@ -14,8 +14,10 @@ jobs:
         uses: actions/checkout@master
       - name: Install Dependencies
         run: npm ci
+        working-directory: ./functions
       - name: Test
         run: npm test
+        working-directory: ./functions
   deploy_staging:
     if: github.ref == 'refs/heads/staging'
     name: Deploy to staging
@@ -25,7 +27,8 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: pushd functions && npm ci
+        run: npm ci
+        working-directory: ./functions
       - name: Set firebase env vars
         uses: w9jds/firebase-action@master
         with: 
@@ -49,7 +52,8 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: pushd functions && npm ci
+        run: npm ci
+        working-directory: ./functions
       - name: Set firebase env vars
         uses: w9jds/firebase-action@master
         with: 
