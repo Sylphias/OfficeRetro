@@ -1,5 +1,15 @@
-const sum = (a, b) => a + b;
+const { removeIndent } = require('../Helpers/TextHelpers');
 
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1, 2)).toBe(3);
+test('removeIndent', () => {
+  const randoString = '123';
+  expect(removeIndent`abc`).toBe('abc');
+  expect(removeIndent`
+    abc
+  `).toBe('abc');
+  expect(
+    removeIndent`start of lines
+    abc
+    ${randoString}
+  `,
+  ).toBe('start of lines\nabc\n123');
 });
