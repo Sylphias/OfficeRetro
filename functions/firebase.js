@@ -12,8 +12,8 @@ if (config.useCredentialsFile) {
 }
 
 admin.initializeApp(firebaseOptions);
-const Firestore = admin.firestore();
 
 module.exports = {
-  firestore: Firestore,
+  firestore: admin.firestore(),
+  database: admin.database(),
 };
