@@ -1,8 +1,10 @@
 require('dotenv').config();
 
 const Telegraf = require('./functions/node_modules/telegraf');
-const session = require('./functions/node_modules/telegraf/session');
+// const session = require('./functions/node_modules/telegraf/session');
+const firestoreSession = require('./functions/firestore-session');
 const Stage = require('./functions/node_modules/telegraf/stage');
+const { firestore } = require('./functions/firebase');
 
 const { leave } = Stage;
 
@@ -15,7 +17,8 @@ const EmotionFeatures = require('./functions/BotFeatures/Emotion');
 const CommonFeatures = require('./functions/BotFeatures/Common');
 const FeedbackFeatures = require('./functions/BotFeatures/Feedback');
 
-bot.use(session());
+// bot.use(session());
+bot.use(firestoreSession(firestore.collection('sessions')));
 bot.use(stage.middleware());
 stage.command('cancel', leave());
 
@@ -28,7 +31,7 @@ bot.use((ctx, next) => {
   return next();
 });
 
-CommonFeatures(bot, stage);
+CommonFeatures(bot);
 FeedbackFeatures(bot, stage);
 EmotionFeatures(bot, stage);
 

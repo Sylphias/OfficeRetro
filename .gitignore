@@ -3,5 +3,6 @@ node_modules
 .vscode
 firebase-aura-tele.json
 firebase-credentials.json
+firebase-*.json
 *.log
 .runtimeconfig.json

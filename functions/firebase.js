@@ -15,5 +15,4 @@ admin.initializeApp(firebaseOptions);
 
 module.exports = {
   firestore: admin.firestore(),
-  database: admin.database(),
 };

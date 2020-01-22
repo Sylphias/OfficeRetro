@@ -29,6 +29,7 @@ const startArgsHelper = async (arg, ctx) => {
     case 'giveFeedback':
       return ctx.scene.enter('feedbackEntry');
     default:
+      return ctx.reply('Sorry, this is not a valid command.');
   }
 };
 

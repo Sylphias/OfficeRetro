@@ -22,6 +22,9 @@ const InitializeCommonFunctions = (bot) => {
     if (args.length === 1) {
       return ctx.reply(welcomeMsg);
     }
+    // TODO: Check for existing session
+    // E.g. user is in middle of a wizard/scene, and clicks another /start link from the bot
+    // That /start would intercept this current wizard/scene
     const subArgs = args[1].split('_');
     return CmdHelpers.startArgsHelper(subArgs, ctx);
   });
