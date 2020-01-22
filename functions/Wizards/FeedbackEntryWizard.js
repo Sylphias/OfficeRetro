@@ -164,6 +164,8 @@ endFeedbackEntry.on('text', async (ctx) => {
     feedbackEntry.responses,
   );
 
+  // TODO: Race condition. User spams text responses, save() will get repeatedly called.
+  // Adde check to make sure only one entry gets saved?
   await storedEntry.save();
   ctx.reply('Thank you for filling up this feedback!');
   ctx.scene.leave();
