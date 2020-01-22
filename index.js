@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const Telegraf = require('./functions/node_modules/telegraf');
 // const session = require('./functions/node_modules/telegraf/session');
-const firestoreSession = require('./functions/firestore-session');
+const firestoreSession = require('./functions/telegraf-firestore-session');
 const Stage = require('./functions/node_modules/telegraf/stage');
 const { firestore } = require('./functions/firebase');
 
