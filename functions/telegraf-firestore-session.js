@@ -7,9 +7,7 @@ module.exports = (sessionRef, opts) => {
   };
 
   async function getSession(key) {
-    const sessionSnapshot = await sessionRef
-      .doc(key)
-      .get();
+    const sessionSnapshot = await sessionRef.doc(key).get();
     return sessionSnapshot.data();
   }
 
@@ -19,7 +17,7 @@ module.exports = (sessionRef, opts) => {
     }
     // Removing custom prototypes on anything attached to session, else firestore rejects this
     const serializedSession = JSON.parse(JSON.stringify(session));
-    return sessionRef.doc(key).set(serializedSession);
+    return sessionRef.doc(key).set(serializedSession, { merge: true });
   }
 
   return async (ctx, next) => {
