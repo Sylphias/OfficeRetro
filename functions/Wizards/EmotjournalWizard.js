@@ -22,8 +22,8 @@ const question = (ctx) => {
 const handleAnswer = new Composer();
 handleAnswer.on('callback_query', async (ctx) => {
   const query = ctx.callbackQuery;
-  const emotionRecord = new EmotionRecord(ctx.message.from.id, query.data);
   try {
+    const emotionRecord = new EmotionRecord(ctx.message.from.id, query.data);
     await emotionRecord.save();
     CommandHelpers.updateCallbackMessage(query.from.id,
       query.message.message_id,

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const functions = require('firebase-functions');
 
 if (process.env.NODE_ENV === 'production') {

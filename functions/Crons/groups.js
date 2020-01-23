@@ -34,44 +34,52 @@ const unsubscribeIfForbidden = async (groupInfo, err) => {
 
 module.exports = {
   async dailyGroupEmotionMessage() {
-    const groupQueryDocs = await SubscriptionHelper.GetActiveGroupSubscriptions();
-    groupQueryDocs.map(async (queryDoc) => {
-      const groupInfo = queryDoc.data();
-      try {
-        const group = new GroupSubscription(groupInfo.chatId, groupInfo.chatTitle);
-        const emotionRecords = await group.getCurrentDayTeamEmotion();
-        // create the snapshot for data analysis
-        const grpSnapshot = new GroupEmotionSnapshot(group.chatId, emotionRecords);
-        grpSnapshot.save();
-        const emotionSummaryString = emotionRecords.reduce((accumulator, userEmotion) => `${accumulator} ${userEmotion.emotion}`, '');
-        const message = emotionRecords.length === 0
-          ? 'Sorry, nobody filled up their emotion journals yesterday... '
-          : removeIndent`This is a summary of how your team felt yesterday: ${emotionSummaryString}`;
-        await telegramClient.sendMessage(groupInfo.chatId, message);
-      } catch (err) {
-        console.error(err);
-        await unsubscribeIfForbidden(groupInfo, err);
-      }
-    });
+    try {
+      const groupQueryDocs = await SubscriptionHelper.GetActiveGroupSubscriptions();
+      groupQueryDocs.map(async (queryDoc) => {
+        const groupInfo = queryDoc.data();
+        try {
+          const group = new GroupSubscription(groupInfo.chatId, groupInfo.chatTitle);
+          const emotionRecords = await group.getCurrentDayTeamEmotion();
+          // create the snapshot for data analysis
+          const grpSnapshot = new GroupEmotionSnapshot(group.chatId, emotionRecords);
+          grpSnapshot.save();
+          const emotionSummaryString = emotionRecords.reduce((accumulator, userEmotion) => `${accumulator} ${userEmotion.emotion}`, '');
+          const message = emotionRecords.length === 0
+            ? 'Sorry, nobody filled up their emotion journals yesterday... '
+            : removeIndent`This is a summary of how your team felt yesterday: ${emotionSummaryString}`;
+          await telegramClient.sendMessage(groupInfo.chatId, message);
+        } catch (err) {
+          console.error(err);
+          await unsubscribeIfForbidden(groupInfo, err);
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
   },
   async groupRecordEmotion() {
-    const groupDocs = await SubscriptionHelper.GetActiveGroupSubscriptions();
-    groupDocs.map(async (doc) => {
-      const groupInfo = doc.data();
-      try {
-        const msgInfo = await telegramClient.sendMessage(
-          groupInfo.chatId,
-          'Hello everybody! Time to do our daily team health updates, click on the button below to begin!',
-          {
-            reply_markup: Markup.inlineKeyboard(
-              [[Markup.urlButton('Lets begin! It will only take a second!', `${config.botUrl}?start=emotionJournal_${groupInfo.chatId.toString()}`)]],
-            ),
-          },
-        );
-      } catch (err) {
-        unsubscribeIfForbidden(groupInfo, err);
-        console.error(err);
-      }
-    });
+    try {
+      const groupDocs = await SubscriptionHelper.GetActiveGroupSubscriptions();
+      groupDocs.map(async (doc) => {
+        const groupInfo = doc.data();
+        try {
+          const msgInfo = await telegramClient.sendMessage(
+            groupInfo.chatId,
+            'Hello everybody! Time to do our daily team health updates, click on the button below to begin!',
+            {
+              reply_markup: Markup.inlineKeyboard(
+                [[Markup.urlButton('Lets begin! It will only take a second!', `${config.botUrl}?start=emotionJournal_${groupInfo.chatId.toString()}`)]],
+              ),
+            },
+          );
+        } catch (err) {
+          unsubscribeIfForbidden(groupInfo, err);
+          console.error(err);
+        }
+      });
+    } catch (err) {
+      console.error(err);
+    }
   },
 };

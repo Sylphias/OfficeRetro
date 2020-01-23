@@ -1,7 +1,6 @@
 const functions = require('firebase-functions');
 
 const bot = require('./bot');
-const userCrons = require('./Crons/user');
 const groupCrons = require('./Crons/groups');
 
 exports.mysecretbotendpoint = functions

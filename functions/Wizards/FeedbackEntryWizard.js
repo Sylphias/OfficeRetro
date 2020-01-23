@@ -119,14 +119,19 @@ endFeedbackEntry.action('endFeedback', submit);
 endFeedbackEntry.action('cancel', cancel);
 endFeedbackEntry.command('cancel', cancel);
 endFeedbackEntry.on('text', async (ctx) => {
-  await CommandHelpers.updateCallbackMessage(ctx.chat.id, ctx.scene.session.messageId, 'Thank you for answering the question!');
-  const feedbackEntry = ctx.scene.session.entry;
-  feedbackEntry.addResponse(
-    'Why so? (Provide more context and information)',
-    ctx.message.text,
-  );
-  await feedbackEntry.save();
-  ctx.reply('Thank you for filling up this feedback!');
+  try {
+    await CommandHelpers.updateCallbackMessage(ctx.chat.id, ctx.scene.session.messageId, 'Thank you for answering the question!');
+    const feedbackEntry = ctx.scene.session.entry;
+    feedbackEntry.addResponse(
+      'Why so? (Provide more context and information)',
+      ctx.message.text,
+    );
+    await feedbackEntry.save();
+    ctx.reply('Thank you for filling up this feedback!');
+  } catch (e) {
+    console.error(e);
+    ctx.reply('Sorry, something went wrong. Please restart the feedback form');
+  }
   ctx.scene.leave();
 });
 

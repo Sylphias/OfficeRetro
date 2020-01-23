@@ -1,6 +1,9 @@
 const Telegraf = require('telegraf');
 const session = require('telegraf/session');
 const Stage = require('telegraf/stage');
+const { CronJob } = require('cron');
+const groupCrons = require('./Crons/groups');
+
 const config = require('./config');
 
 const { leave } = Stage;
@@ -20,4 +23,17 @@ stage.command('cancel', leave());
 CommonFeatures(bot);
 FeedbackFeatures(bot, stage);
 EmotionFeatures(bot, stage);
-module.exports = bot;
+
+const dailyEmote = new CronJob('0 15 17 * * 1-5',
+  groupCrons.dailyGroupEmotionMessage,
+  null,
+  true,
+  'Asia/Singapore');
+
+const dailyGroupEmoteReport = new CronJob('0 15 17 * * 2-5',
+  groupCrons.groupRecordEmotion,
+  null,
+  true,
+  'Asia/Singapore');
+bot.launch();
+// module.exports = bot;

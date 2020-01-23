@@ -4,7 +4,7 @@
   "scripts": {
     "serve": "firebase serve --only functions",
     "shell": "firebase functions:shell",
-    "start": "npm run shell",
+    "start": "node bot.js",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "test": "jest"
@@ -13,6 +13,8 @@
     "node": "8"
   },
   "dependencies": {
+    "cron": "^1.8.1",
+    "dotenv": "^8.2.0",
     "firebase-admin": "^8.9.0",
     "firebase-functions": "^3.3.0",
     "moment": "^2.24.0",
