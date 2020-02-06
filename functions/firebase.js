@@ -2,11 +2,9 @@ const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 const config = require('./config');
 
-let credentials;
 let firebaseOptions = {};
-if (config.useCredentialsFile) {
-  credentials = require('./firebase-aura-tele.json'); // eslint-disable-line global-require
-  firebaseOptions.credential = admin.credential.cert(credentials);
+if (config.firebaseCredentials) {
+  firebaseOptions.credential = admin.credential.cert(JSON.parse(config.firebaseCredentials));
 } else {
   firebaseOptions = functions.config().firebase;
 }

@@ -5,3 +5,4 @@ firebase-aura-tele.json
 firebase-credentials.json
 *.log
 .runtimeconfig.json
+*.zip

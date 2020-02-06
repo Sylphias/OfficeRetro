@@ -23,14 +23,19 @@ stage.command('cancel', leave());
 CommonFeatures(bot);
 FeedbackFeatures(bot, stage);
 EmotionFeatures(bot, stage);
-
-const dailyEmote = new CronJob('0 15 17 * * 1-5',
-  groupCrons.dailyGroupEmotionMessage,
+const mondayEmote = new CronJob('0 15 17 * * 1',
+  () => { groupCrons.dailyGroupEmotionMessage(3); },
   null,
   true,
   'Asia/Singapore');
 
-const dailyGroupEmoteReport = new CronJob('0 15 17 * * 2-5',
+const dailyEmote = new CronJob('0 15 17 * * 2-5',
+  () => { groupCrons.dailyGroupEmotionMessage(1); },
+  null,
+  true,
+  'Asia/Singapore');
+
+const dailyGroupEmoteReport = new CronJob('0 15 17 * * 1-5',
   groupCrons.groupRecordEmotion,
   null,
   true,

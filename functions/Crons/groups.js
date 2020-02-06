@@ -33,14 +33,14 @@ const unsubscribeIfForbidden = async (groupInfo, err) => {
 };
 
 module.exports = {
-  async dailyGroupEmotionMessage() {
+  async dailyGroupEmotionMessage(daysAgo) {
     try {
       const groupQueryDocs = await SubscriptionHelper.GetActiveGroupSubscriptions();
       groupQueryDocs.map(async (queryDoc) => {
         const groupInfo = queryDoc.data();
         try {
           const group = new GroupSubscription(groupInfo.chatId, groupInfo.chatTitle);
-          const emotionRecords = await group.getCurrentDayTeamEmotion();
+          const emotionRecords = await group.getCurrentDayTeamEmotion(daysAgo);
           // create the snapshot for data analysis
           const grpSnapshot = new GroupEmotionSnapshot(group.chatId, emotionRecords);
           grpSnapshot.save();

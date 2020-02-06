@@ -34,7 +34,7 @@ exports.scheduledUserActions = functions.pubsub
   .timeZone('Asia/Singapore')
   .onRun(async () => {
     await Promise.all([
-      groupCrons.dailyGroupEmotionMessage(),
+      groupCrons.dailyGroupEmotionMessage(1),
       groupCrons.groupRecordEmotion(),
     ]);
   });
